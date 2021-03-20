@@ -1,0 +1,2 @@
+dotnet ef --startup-project ../CodeWithMukesh/CodeWithMukesh.csproj migrations add init  --context AuthDbContext --verbose
+dotnet ef --startup-project ../CodeWithMukesh/CodeWithMukesh.csproj database update  --context AuthDbContext --verbose
