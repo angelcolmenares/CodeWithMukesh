@@ -19,7 +19,8 @@ namespace CodeWithMukesh
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {                    
-                    await ContextSeed.SeedRolesAsync(services);                    
+                    await ContextSeed.SeedRolesAsync(services);      
+                    await ContextSeed.SeedSuperAdminAsync(services);              
                 }
                 catch (Exception ex)
                 {

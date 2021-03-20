@@ -119,3 +119,5 @@ App_Data
 global.json
 
 app.db
+app.db-shm
+app.db-wal
