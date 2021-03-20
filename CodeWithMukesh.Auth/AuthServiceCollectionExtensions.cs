@@ -10,12 +10,12 @@ namespace CodeWithMukesh.Auth
         public static IServiceCollection ConfigureIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
-            .AddDbContext<AuthDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("IdentityDbConnection")));
+            .AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("AppIdentityDbConnection")));
                         
             services
-            .AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<AuthDbContext>()
+            .AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
 

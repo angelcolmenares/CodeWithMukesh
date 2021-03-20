@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodeWithMukesh.Auth
 {
-    public class AuthDbContext<TUser>: IdentityDbContext<TUser> where TUser: IdentityUser
-    {
-        public AuthDbContext(DbContextOptions<AuthDbContext> options)
-            : base(options)
-        {
-        }
-
-    }
-    public class AuthDbContext : AuthDbContext<IdentityUser>
+        
+    public class AuthDbContext : IdentityDbContext<IdentityUser>
     {
         public AuthDbContext(DbContextOptions<AuthDbContext> options)
             : base(options)

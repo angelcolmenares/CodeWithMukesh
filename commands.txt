@@ -1,2 +1,4 @@
-dotnet ef --startup-project ../CodeWithMukesh/CodeWithMukesh.csproj migrations add init  --context AuthDbContext --verbose
-dotnet ef --startup-project ../CodeWithMukesh/CodeWithMukesh.csproj database update  --context AuthDbContext --verbose
+dotnet ef --startup-project ../CodeWithMukesh/CodeWithMukesh.csproj migrations add init  --context AppIdentityDbContext --verbose
+dotnet ef --startup-project ../CodeWithMukesh/CodeWithMukesh.csproj database update  --context AppIdentityDbContext --verbose
+
+dotnet aspnet-codegenerator identity -dc CodeWithMukesh.Auth.AppIdentityDbContext --files "Account.Register;Account.Login;Account.Logout" 

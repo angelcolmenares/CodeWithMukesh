@@ -121,3 +121,6 @@ global.json
 app.db
 app.db-shm
 app.db-wal
+AppIdentity.db
+AppIdentity.db-shm
+AppIdentity.db-wal

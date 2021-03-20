@@ -17,14 +17,18 @@ namespace CodeWithMukesh
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger<Program>();
                 try
                 {                    
-                    await ContextSeed.SeedRolesAsync(services);      
-                    await ContextSeed.SeedSuperAdminAsync(services);              
+                    await ContextSeed.SeedRolesAsync(services); 
+                    logger.LogInformation("Seed roles ok");
+                         
+                    await ContextSeed.SeedSuperAdminAsync(services);
+                    logger.LogInformation("Seed super admin ok");
                 }
                 catch (Exception ex)
                 {
-                    var logger = loggerFactory.CreateLogger<Program>();
+                    
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
