@@ -21,7 +21,8 @@ namespace CodeWithMukesh
         {                       
             services.ConfigureIdentityServices(Configuration);
 
-            services.AddDatabaseDeveloperPageExceptionFilter();                    
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            //services.AddControllersWithViews();                    
             services.AddRazorPages();
         }
 
