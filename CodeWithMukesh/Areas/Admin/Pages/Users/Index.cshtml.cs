@@ -21,21 +21,20 @@ namespace CodeWithMukesh.Areas.Admin.Pages.Users
     [AllowAnonymous]
     public class IndexModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        public List<ApplicationUser> Users = new List<ApplicationUser>();
-
+        private readonly UserManager<ApplicationUser> _userManager;        
         public IndexModel(UserManager<ApplicationUser> userManager){
             _userManager = userManager;
         }
         public async Task OnGetAsync()
         {
-            Users= await _userManager.Users.ToListAsync();             
+            await Task.CompletedTask;
+            //Users= await _userManager.Users.ToListAsync();             
         }
 
         public async Task<IActionResult> OnGetLoadAllAsync()
         {            
-            Users = await _userManager.Users.ToListAsync();            
-            return Partial("_ViewAll", Users);
+            var users = await _userManager.Users.ToListAsync();            
+            return Partial("_ViewAll", users);
         }
     }
 }

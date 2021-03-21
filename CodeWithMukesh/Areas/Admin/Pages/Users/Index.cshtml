@@ -15,8 +15,7 @@
             Reload
         </a>
     </div>
-    <div id="viewAll" class="card-body table-responsive">
-        <partial name="_ViewAll" model="Model.Users"/>
+    <div id="viewAll" class="card-body table-responsive">        
     </div>
     
 </div>
@@ -24,8 +23,8 @@
 {    
     <script>
         $(document).ready(function () {
-            //$("#userTable").DataTable();
-            //loadData();
+            $("#userTable").DataTable();
+            loadData();
             $('#reload').on('click', function () {
                 loadData();
             });
