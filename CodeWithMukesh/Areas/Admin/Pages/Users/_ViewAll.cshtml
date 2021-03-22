@@ -1,4 +1,4 @@
-@model IEnumerable<ApplicationUser>
+@model IEnumerable<ApplicationUserModel>
 
 <table class="table table-striped" id="userTable">
     <thead>
@@ -8,7 +8,8 @@
             </th>
             <th>
                 "Email"
-            </th>           
+            </th>      
+            <th>Roles</th>     
             <th style="width:10%">
                 @localizer["Actions"]
             </th>
@@ -50,6 +51,13 @@
                 </td>
                 
                 <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        <span class="badge badge-success">@role</span>
+                    }
+                </td>
+
+                <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
@@ -57,8 +65,8 @@
                         <div class="dropdown-menu shadow animated--grow-in">
                             <a style='margin-right:16px' asp-area="Identity" asp-page="/Profile" asp-route-userId="@user.Id" class="dropdown-item">
                                 <i class="fas fa-user"></i> @localizer["Profile"]
-                            </a>
-                            <a style='margin-right:16px' asp-controller="UserRole" asp-action="Index" asp-route-userId="@user.Id" class="dropdown-item">
+                            </a>                            
+                            <a style='margin-right:16px' asp-area="Admin" asp-page="/Users/UserRole"  asp-route-userId="@user.Id" class="dropdown-item">
                                 <i class="fas fa-wrench"></i> @localizer["Manage Roles"]
                             </a>
                         </div>
