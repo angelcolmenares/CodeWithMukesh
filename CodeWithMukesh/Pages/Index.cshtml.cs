@@ -19,6 +19,34 @@ namespace CodeWithMukesh.Pages
 
         public void OnGet()
         {
+            System.Console.WriteLine("OnGet");
+        }
+
+        public async Task<IActionResult> OnGetLoadMenu()
+        {
+            return await Task.FromResult( Partial("_AppMenu"));
+
+        }
+
+        public async Task<IActionResult> OnGetLoadPage(string module, string pageName, bool reload)
+        {
+            System.Console.WriteLine($"On Get Module:'{module}' pageName:'{pageName}', {reload} ");
+            await Task.CompletedTask;
+            if(reload)
+            {
+                System.Console.WriteLine($"redirect");
+                return Redirect("/");
+            }
+
+            if(!string.IsNullOrEmpty(pageName) && pageName!="/Index" )
+            {
+                System.Console.WriteLine($"partial: '{pageName}'");
+                return Partial($"_{pageName}");
+            }
+
+            System.Console.WriteLine($"redirect _myPartial");
+            
+            return Partial("_AppMenu");
 
         }
     }

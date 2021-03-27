@@ -8,3 +8,28 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<a id="reload" class="btn btn-primary text-white">
+            <i class="fa fas fa-bolt"></i>
+            Reload Menu
+</a>
+<div id="_AppMenu">
+    
+</div>
+
+
+@section Scripts
+{    
+    <script>
+        $(document).ready(function () { 
+            console.log("_ index cshtml..........");
+            loadMenu();
+            $('#reload').on('click', function () {
+                loadMenu();
+            });
+        });
+        function loadMenu() {
+            $('#_AppMenu').load('?handler=LoadMenu');
+        }
+    </script>
+}
