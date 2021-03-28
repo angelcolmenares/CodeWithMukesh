@@ -7,6 +7,7 @@ using CodeWithMukesh.Auth;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace CodeWithMukesh
 {
@@ -22,6 +23,11 @@ namespace CodeWithMukesh
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IActionContextAccessor, ActionContextAccessor>();            
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            
             services.ConfigureIdentityServices(Configuration);
 
             services.AddDatabaseDeveloperPageExceptionFilter();

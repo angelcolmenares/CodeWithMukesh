@@ -1,0 +1,76 @@
+﻿@model CreateUserInput
+<form name="createUserForm" method="post">    
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">@localizer["Email"]</label>
+        <div class="col-md-9">
+            <input type="email" asp-for="Email" name="Email" class="form-control">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">@localizer["Password"]</label>
+        <div class="col-md-9">
+            <input type="password" asp-for="Password" name="Password" class="form-control">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">@localizer["ConfirmPassword"]</label>
+        <div class="col-md-9">
+            <input type="password" asp-for="ConfirmPassword" name="ConfirmPassword" class="form-control">
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" id="cancelCreateUser"
+         class="btn btn-default close-button" 
+         data-dismiss="modal">
+         Cancel
+        </button>
+    </div>
+</form>
+<div id="createUserError" class="card" style="padding-top:10px" hidden></div>
+<script >
+    //$.validator.unobtrusive.parse(document);    
+    $('#cancelCreateUser').on('click', ()=> window.location.href='/Admin/Users');
+
+    const createUserForm = document.forms.createUserForm;
+    async function CreateUser () 
+    {        
+        let data = new FormData(createUserForm);
+        if( data.get('Password')!= data.get('ConfirmPassword'))
+        {
+            alert('password does not match with confirm');
+            return;
+        }
+        let response = await fetch('/Admin/Users?handler=CreateUser',
+        {
+            method:'post',
+            body : new URLSearchParams(data)
+        });
+        if( !response.ok)
+        {
+            let error = response.statusText || await response.text();
+            alert(`HTTP error! status: ${response.status} ${error}` );
+            return;
+        }
+        let result = await response.json();                
+        if(! result.success)
+        {
+            console.log(result);
+            let createUserError= document.getElementById("createUserError");
+            createUserError.hidden=false;
+            createUserError.innerHTML= result.html ||  "error when creating user";
+            return;
+        }   
+        window.location.href=result.redirect;     
+    }
+
+    createUserForm.onsubmit= ()=> 
+    {
+        CreateUser();
+        return false;
+    };
+    
+</script>

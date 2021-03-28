@@ -6,8 +6,8 @@
     ViewData["Caption"] = localizer["Manage Users here"];
 }
 <div class="card">
-    <div class="col-sm-12" style="padding:20px">
-        <a onclick="jQueryModalGet('/admin/user/OnGetCreate','Create User')" class="btn bg-success">
+    <div id="userActions"  class="col-sm-12" style="padding:20px">
+        <a  id="createUser" class="btn bg-success">
             <i class="fa fa-plus-square"></i> @localizer["Create"]
         </a>
         <a id="reload" class="btn btn-primary text-white">
@@ -17,6 +17,7 @@
     </div>
     <div id="viewAll" class="card-body table-responsive">        
     </div>
+    <div id="createUserContainer"  class="card-body"></div>
     
 </div>
 @section Scripts
@@ -26,11 +27,20 @@
             $("#userTable").DataTable();
             loadData();
             $('#reload').on('click', function () {
-                loadData();
+                loadData();                
+            });
+            $('#createUser').on('click', function () {
+                createUser();
             });
         });
         function loadData() {
             $('#viewAll').load('/admin/users/index?handler=LoadAll');            
+        }
+
+        function createUser() {
+            $('#viewAll').hide();
+            $('#userActions').hide();
+            $('#createUserContainer').load('/admin/users?handler=CreateUser');            
         }
     </script>
 }
