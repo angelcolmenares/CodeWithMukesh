@@ -1,0 +1,71 @@
+@model CodeWithMukesh.Areas.Admin.Pages.Roles.RoleViewModel
+<form name="editRoleForm" method="post">    
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">@localizer["Id"]</label>
+        <div class="col-md-9">
+            <input readonly asp-for="Id" name="Id" class="form-control">
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">@localizer["Role"]</label>
+        <div class="col-md-9">
+            <input asp-for="Name" name="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>    
+    
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" id="cancelEditRole"
+         class="btn btn-default close-button" 
+         data-dismiss="modal">
+         Cancel
+        </button>
+    </div>
+</form>
+<div id="editRoleError" class="card" style="padding-top:10px" hidden></div>
+<script >
+    //$.validator.unobtrusive.parse(document);    
+    $('#cancelEditRole').on('click', ()=> window.location.href='/admin/roles');
+
+    const form = document.forms.editRoleForm
+    async function editRole () 
+    {        
+        let data = new FormData(form);
+        if( data.get('Name') ==='')
+        {
+            alert('empty role !!!');
+            return;
+        }
+        let response = await fetch('/admin/roles/edit?handler=save',
+        {
+            method:'post',
+            body : new URLSearchParams(data)
+        });
+        if( !response.ok)
+        {
+            let error = response.statusText || await response.text();
+            alert(`HTTP error! status: ${response.status} ${error}` );
+            return;
+        }
+        let result = await response.json();                
+        if(! result.success)
+        {
+            console.log(result);
+            let errorContainer= document.getElementById("editRoleError");
+            errorContainer.hidden=false;
+            errorContainer.innerHTML= result.html ||  "error when editing role";
+            return;
+        }   
+        window.location.href=result.redirect;     
+    }
+
+    form.onsubmit= ()=> 
+    {
+        editRole();
+        return false;
+    };
+    
+</script>
+

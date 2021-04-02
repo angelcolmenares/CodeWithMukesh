@@ -1,0 +1,63 @@
+@page
+@model CodeWithMukesh.Areas.Admin.Pages.Roles.IndexModel
+
+@{
+    ViewData["Title"] = localizer["Roles"];
+    ViewData["Caption"] = localizer["Manage Roles here"];
+}
+
+<div id="roleContainer">
+<div class="card">
+    <div id="roleActions"  class="col-sm-12" style="padding:20px">
+        <a  id="createRole" class="btn bg-success">
+            <i class="fa fa-plus-square"></i> @localizer["Create"]
+        </a>
+        <a id="reload" class="btn btn-primary text-white">
+            <i class="fa fas fa-bolt"></i>
+            @localizer["Reload"]
+        </a>
+    </div>
+    <div id="viewAll" class="card-body table-responsive">        
+    </div>
+    <div id="createRoleContainer"  class="card-body"></div>
+    
+</div>
+</div>
+
+@section Scripts
+{    
+    <script>
+        $(document).ready(function () 
+        {
+            loadData();
+            
+            let viewAll = document.getElementById("viewAll");            
+            viewAll.addEventListener(
+                'editRole', 
+                function (e) {
+                    console.log(e);
+                    console.log(e.detail);
+                    $('#roleContainer').load(`/admin/roles/edit?handler=load&roleId=${e.detail}`);                    
+                },
+                false);            
+            
+            $('#reload').on('click', function () {
+                loadData();                
+            });
+
+            $('#createRole').on('click', function () {
+                createRole();
+            });
+        });
+
+        function loadData() {
+            $('#viewAll').load('/admin/roles?handler=ViewAll');            
+        }
+
+        function createRole() {
+            /*$('#viewAll').hide();
+            $('#roleActions').hide();
+            $('#createRoleContainer').load('/admin/roles?handler=CreateRole');            */
+        }
+    </script>
+}

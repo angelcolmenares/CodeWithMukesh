@@ -1,21 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using CodeWithMukesh.Auth;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
+using static CodeWithMukesh.Auth.Roles;
+
 
 namespace CodeWithMukesh.Areas.Admin.Pages.Users
 {
@@ -75,7 +68,7 @@ namespace CodeWithMukesh.Areas.Admin.Pages.Users
                 return new JsonResult(new { success = false, errors = result.Errors, html =html });
                 
             }
-            await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
+            await _userManager.AddToRoleAsync(user, Basic.ToString());
             await _userManager.GenerateEmailConfirmationTokenAsync(user);
             return new JsonResult(new { success = true, redirect= $"/admin/users/userRole?userId={user.Id}"});
     
