@@ -6,9 +6,9 @@
     ViewData["Caption"] = localizer["Manage Roles here"];
 }
 
-<div id="roleContainer">
 <div class="card">
-    <div id="roleActions"  class="col-sm-12" style="padding:20px">
+    <div id="roleActionsAndViewAll">
+    <div id="roleActions"  class="card-body">
         <a  id="createRole" class="btn bg-success">
             <i class="fa fa-plus-square"></i> @localizer["Create"]
         </a>
@@ -17,27 +17,27 @@
             @localizer["Reload"]
         </a>
     </div>
-    <div id="viewAll" class="card-body table-responsive">        
+    <div id="viewAll" class="card-body table-responsive">  
+        <partial name="_ViewAll"  model="Model.RoleViewModelList"  /> 
+    </div>  
     </div>
-    <div id="createRoleContainer"  class="card-body"></div>
-    
+    <div id="createRoleContainer"  class="card-body" hidden></div>
+    <div id="editRoleContainer" class="card-body" hidden ></div>      
 </div>
-</div>
+
 
 @section Scripts
 {    
     <script>
         $(document).ready(function () 
-        {
-            loadData();
-            
+        {            
             let viewAll = document.getElementById("viewAll");            
             viewAll.addEventListener(
                 'editRole', 
-                function (e) {
-                    console.log(e);
-                    console.log(e.detail);
-                    $('#roleContainer').load(`/admin/roles/edit?handler=load&roleId=${e.detail}`);                    
+                function (e) 
+                {                    
+                    showRoleActionsAndViewAll(false);
+                    loadRole(e.detail);                    
                 },
                 false);            
             
@@ -49,6 +49,19 @@
                 createRole();
             });
         });
+
+        function loadRole(roleId)
+        {
+            let container = document.getElementById("editRoleContainer");
+            container.hidden=false;
+            $('#editRoleContainer').load(`/admin/roles/edit?handler=load&roleId=${roleId}`);                    
+        }
+
+        function showRoleActionsAndViewAll(show)
+        {
+            let container = document.getElementById("roleActionsAndViewAll");
+            container.hidden = !show;
+        }
 
         function loadData() {
             $('#viewAll').load('/admin/roles?handler=ViewAll');            
