@@ -26,33 +26,30 @@
 </form>
 <div id="editRoleError" class="card" style="padding-top:10px" hidden></div>
 <script >
-    (function () {
+    (function () 
+    {
         const editRoleContainer = document.getElementById('editRoleContainer');
         $('#cancelEditRole').on('click', () => editRoleContainer.dispatchEvent(new CustomEvent('editRoleFinished', { 'detail': { saved: false } })));
-
         const form = document.forms.editRoleForm
         async function editRole() {
             let data = new FormData(form);
-            if (data.get('Name') === '') {
+            if (data.get('Name') === '') 
+            {
                 alert('empty role !!!');
                 return;
             }
-            let response = await fetch('/admin/roles/edit?handler=save',
-                {
-                    method: 'post',
-                    body: new URLSearchParams(data)
-                });
-            if (!response.ok) {
-                let error = response.statusText || await response.text();
-                alert(`HTTP error! status: ${response.status} ${error}`);
+            let response = await postAsync('/admin/roles/edit?handler=save', data);            
+            
+            if (!response.ok) 
+            {                
+                alert(`HTTP error! status: ${response.status} ${response.error}`);
                 return;
             }
-            let result = await response.json();
-            if (!result.success) {
-                console.log(result);
+            if (!response.result.success) {
+                console.log(response.result);
                 let errorContainer = document.getElementById("editRoleError");
                 errorContainer.hidden = false;
-                errorContainer.innerHTML = result.html || "error when editing role";
+                errorContainer.innerHTML = response.result.html || "error when editing role";
                 return;
             }
             //window.location.href=result.redirect;     

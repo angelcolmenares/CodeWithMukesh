@@ -1,0 +1,28 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityError>
+
+<h1 class="badge badge-danger"> Error </h1>
+<table class="table table-striped" id="userTable">
+    <thead>
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Description
+            </th>                  
+    </thead>
+    <tbody>
+        @foreach (var error in Model)
+        {
+            <tr>
+                <td>                    
+                    @error.Code                    
+                </td>
+                <td>
+                    @error.Description
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>

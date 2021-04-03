@@ -12,13 +12,17 @@ namespace CodeWithMukesh.Areas.Admin.Pages.Roles
     public class EditRole : PageModel
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IViewRenderService _viewRenderService;
 
         public RoleViewModel RoleViewModel { get; set; }
 
 
-        public EditRole(RoleManager<IdentityRole> roleManager)
+        public EditRole(
+            RoleManager<IdentityRole> roleManager,
+            IViewRenderService viewRenderService)
         {
             _roleManager = roleManager;
+            _viewRenderService = viewRenderService;
         }
 
         public async Task OnGet(string roleId)
@@ -33,11 +37,19 @@ namespace CodeWithMukesh.Areas.Admin.Pages.Roles
         }
 
         public async Task<IActionResult> OnPostSaveAsync(RoleViewModel input)
-        {
-            System.Console.WriteLine($"id : {input?.Id}  name = {input.Name}");            
+        {            
+            
             var role =  await  _roleManager.Roles
             .FirstOrDefaultAsync(f=> f.Id== input.Id);
-            System.Console.WriteLine($"role id : {role?.Id}  role name = {role.Name}");            
+            
+            if( role.Name== CodeWithMukesh.Auth.Roles.SuperAdmin.ToString())
+            {
+                var errors = new List<IdentityError>( );
+                errors.Add( new IdentityError{ Description="Superamdin", Code="no"});
+                var html = await _viewRenderService.RenderViewToStringAsync("_IdentityError", errors );
+                return new JsonResult(new { success = false, errors = errors, html =html });                
+            }
+
             await _roleManager.SetRoleNameAsync( role, input.Name);
             await _roleManager.UpdateAsync(role);
             return new JsonResult(new { success = true, redirect= $"/admin/roles"});
