@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,8 +39,19 @@ namespace CodeWithMukesh.Areas.Admin.Pages.Roles
         }
 
         public async Task<IActionResult> OnPostSaveAsync(RoleViewModel input)
-        {            
-            
+        {   
+            if(!ModelState.IsValid)
+            {
+                var errors=  ModelState.Where(x=>x.Value.Errors.Count>0)
+                .SelectMany( state=>  state.Value.Errors, (state, error)=> 
+                new Tuple<string  ,string>(state.Key, error.ErrorMessage) )
+                .ToList<Tuple<string ,string>>();                
+                
+                
+                var html = await _viewRenderService.RenderViewToStringAsync("_ModelError", errors );
+
+                return new JsonResult(new { success = false, errors = errors, html =html });                
+            }
             var role =  await  _roleManager.Roles
             .FirstOrDefaultAsync(f=> f.Id== input.Id);
             

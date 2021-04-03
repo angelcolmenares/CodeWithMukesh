@@ -1,0 +1,19 @@
+@model IEnumerable<Tuple<string,string>>
+
+<h1 class="badge badge-danger"> Error </h1>
+<table class="table table-striped" id="userTable">
+    
+    <tbody>
+        @foreach (var error in Model)
+        {
+            <tr>
+                <td>                    
+                    @error.Item1
+                </td>                                
+                <td>                    
+                    @error.Item2
+                </td>          
+            </tr>
+        }
+    </tbody>
+</table>

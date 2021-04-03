@@ -31,13 +31,16 @@
         const editRoleContainer = document.getElementById('editRoleContainer');
         $('#cancelEditRole').on('click', () => editRoleContainer.dispatchEvent(new CustomEvent('editRoleFinished', { 'detail': { saved: false } })));
         const form = document.forms.editRoleForm
+        $.validator.unobtrusive.parse(form);
+
         async function editRole() {
-            let data = new FormData(form);
-            if (data.get('Name') === '') 
+            if( !$(form).valid()) 
             {
-                alert('empty role !!!');
                 return;
             }
+
+            let data = new FormData(form);
+            
             let response = await postAsync('/admin/roles/edit?handler=save', data);            
             
             if (!response.ok) 
