@@ -41,6 +41,20 @@
                 },
                 false);            
             
+            let editRoleContainer = document.getElementById("editRoleContainer");
+
+            editRoleContainer.addEventListener(
+                'editRoleFinished', 
+                function (e) 
+                {  
+                    console.log(e.detail); 
+                    loadData();                 
+                    showRoleActionsAndViewAll(true);
+                    editRoleContainer.hidden=true;
+                },
+                false);            
+
+            
             $('#reload').on('click', function () {
                 loadData();                
             });
@@ -54,7 +68,8 @@
         {
             let container = document.getElementById("editRoleContainer");
             container.hidden=false;
-            $('#editRoleContainer').load(`/admin/roles/edit?handler=load&roleId=${roleId}`);                    
+            container.innerHTML='';
+            $(container).load(`/admin/roles/edit?handler=load&roleId=${roleId}`);                    
         }
 
         function showRoleActionsAndViewAll(show)
