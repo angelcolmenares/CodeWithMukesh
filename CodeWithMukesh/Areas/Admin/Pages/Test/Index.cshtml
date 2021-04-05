@@ -1,0 +1,43 @@
+@page
+@model CodeWithMukesh.Areas.Admin.Pages.Test.IndexModel
+
+@{
+    ViewData["Title"] = localizer["Roles"];
+    ViewData["Caption"] = localizer["Manage Roles here"];
+}
+
+<div class="card">
+@if(Model.ViewMode=="ViewAll")
+{
+    <a id="reload" class="btn btn-primary text-white" onclick="reload()">
+            <i class="fa fas fa-bolt"></i>
+            @localizer["Reload"]
+    </a>
+    <div id="viewAll" class="card-body table-responsive">  
+        <partial name="_ViewAll" model="Model.RoleViewModelList"/>
+    </div>
+}
+@if(Model.ViewMode=="EditRole")
+{
+    <div id="edit" class="card-body ">  
+        <partial name="_Edit" model="Model.RoleViewModel"/>
+    </div>
+}
+</div>
+
+
+@section Scripts
+{  
+    <partial name="_ValidationScriptsPartial" />  
+    <script>
+        $(document).ready(function () 
+        {
+            
+        });
+        async function reload()
+        {
+            let targetElement= document.getElementById('viewAll');
+            await loadAsync({pathname:'/admin/test', data:{handler:"ViewAll"}, targetElement:targetElement});
+        }
+    </script>
+}
